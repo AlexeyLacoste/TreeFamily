@@ -1,3 +1,4 @@
+import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,9 +28,16 @@ public class Main {
         tree.addPerson(marina);
         tree.addPerson(mihail);
 
-        System.out.println("Дети Елена: " + tree.getChildren("Елена"));
-        System.out.println("Дети Марина: " + tree.getChildren("Марина"));
-        System.out.println("Братья и сестры Любовь: " + tree.getSiblings("Любовь"));
+        TextDataStorage storage = new BinaryFileStorage();
+        String filename = "familyTree.txt";
+
+        try {
+            storage.save(tree, filename);
+            FamilyTree loaded = storage.load(filename);
+            loaded.printTreeForPerson("Марина");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

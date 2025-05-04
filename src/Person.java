@@ -1,7 +1,11 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Person {
+public class Person implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+
     private String name;
     private int birthYear;
     private Person mother;
@@ -58,5 +62,14 @@ public class Person {
     @Override
     public String toString() {
         return name + " (p. " + birthYear + ")";
+    }
+    public String toDataString() {
+        String fatherName = (father != null) ? father.getName() : "null";
+        String motherName = (mother != null) ? mother.getName() : "null";
+        return name + ";" +birthYear + ";" + fatherName + ";" + motherName;
+    }
+    public static Person fromDataString(String data) {
+        String[] parts = data.split(";");
+        return new Person(parts[0], Integer.parseInt(parts[1]));
     }
 }
