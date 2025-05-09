@@ -1,3 +1,10 @@
+package main;
+import model.FamilyTree;
+import model.Person;
+import service.DataHandler;
+import service.TextDataStorage;
+import model.BinaryFileStorage;
+
 import java.io.IOException;
 
 public class Main {
@@ -28,16 +35,21 @@ public class Main {
         tree.addPerson(marina);
         tree.addPerson(mihail);
 
-        TextDataStorage storage = new BinaryFileStorage();
-        String filename = "familyTree.txt";
+        // Сохраняем
+        DataHandler<FamilyTree> handler = new DataHandler<>();
+        handler.saveToFile(tree, "tree.dat");
 
-        try {
-            storage.save(tree, filename);
-            FamilyTree loaded = storage.load(filename);
-            loaded.printTreeForPerson("Марина");
-        } catch (IOException e) {
-            e.printStackTrace();
+        // Загружаем
+        FamilyTree loadedTree = handler.loadFromFile("tree.dat");
+
+        // Проверим вывод
+        if (loadedTree != null) {
+            System.out.println("\n📂 Загруженное дерево:");
+            for (Person p : loadedTree) {
+                System.out.println(p);
+            }
         }
-
     }
 }
+
+
