@@ -3,32 +3,33 @@ package service;
 import model.FamilyTree;
 import model.Person;
 
+import java.util.Comparator;
 import java.util.List;
 
-public class DataService {
-    private FamilyTree tree;
 
-    public DataService(FamilyTree tree) {
+/*
+ * Сервис для операций над универсальным деревом: добавление, сортировка, получение
+ * Универсален для любого типа T.
+ */
+public class DataService<T> {
+    private final FamilyTree<T> tree;
+
+    public DataService(FamilyTree<T> tree) {
         this.tree = tree;
     }
 
-    // Добавляет человека в дерево
-    public void add(Person person) {
-        tree.addPerson(person);
+    /** Добавить элемент в дерево */
+    public void add(T element) {
+        tree.add(element);
     }
 
-    // Сортировка по имени
-    public void sortByName() {
-        tree.sortByName();
+    /** Сортировка элементов по заданному компаратору */
+    public void sort(Comparator<? super T> comparator) {
+        tree.sort(comparator);
     }
 
-    // Сортировка по году рождения
-    public void sortByBirthYear() {
-        tree.sortByBirthYear();
-    }
-
-    // Получить всех людей
-    public List<Person> getAll() {
-        return tree.getPeople();
+    /** Получить все элементы */
+    public List<T> getAll() {
+        return tree.getAll();
     }
 }

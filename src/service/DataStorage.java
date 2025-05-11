@@ -4,8 +4,8 @@ import model.FamilyTree;
 
 import java.io.IOException;
 
-public interface DataStorage {
-    void save(FamilyTree tree, String fileName) throws IOException;
-    FamilyTree load(String fileName) throws IOException;
+public interface DataStorage<T> {
+    void save(T object, String fileName) throws IOException, ClassNotFoundException;
+    T load(String fileName) throws IOException, ClassNotFoundException;
 
 }

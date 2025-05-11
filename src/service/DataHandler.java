@@ -2,26 +2,20 @@ package service;
 
 import java.io.*;
 
-public class DataHandler<T extends Serializable> implements DataSaver<T> {
+public class DataHandler<T extends Serializable> implements FileOperations<T> {
     @Override
-    public void saveToFile(T object, String filename) {
+    public void save(T object, String filename) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
             oos.writeObject(object);
-            System.out.println("✅ Объект успешно сохранён в файл: " + filename);
-        } catch (IOException e) {
-            System.err.println("❌ Ошибка при сохранении: " + e.getMessage());
         }
     }
 
     @Override
-    public T loadFromFile(String filename) {
+    public T load(String filename) throws IOException, ClassNotFoundException {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
-            Object obj = ois.readObject();
-            System.out.println("✅ Объект успешно загружен из файла: " + filename);
-            return (T) obj;
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("❌ Ошибка при загрузке: " + e.getMessage());
-            return null;
+            @SuppressWarnings("unchecked")
+            T obj = (T) ois.readObject();
+            return obj;
         }
     }
 }
